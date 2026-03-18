@@ -44,7 +44,7 @@ button:hover {
   opacity: 0.9;
 }
 
-/* ===== CONTAINER ===== */
+/* container */
 .container {
   max-width: 1000px;
   margin: 40px auto;
@@ -59,12 +59,23 @@ button:hover {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
 }
 
-/* ===== HEADER ===== */
+/* header */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 25px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.last-updated {
+  font-size: 0.85rem;
+  color: #888;
 }
 
 .logo {
@@ -73,12 +84,18 @@ button:hover {
   color: #646cff;
 }
 
-/* ===== CARDS ===== */
+/* Volledige lijst van crypto coins  */
+.coin-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Blokken crypto coins */
 .card {
   background: rgba(255, 255, 255, 0.03);
   border-radius: 12px;
   padding: 20px;
-  margin-bottom: 15px;
 
   border: 1px solid rgba(255, 255, 255, 0.08);
   transition: transform 0.2s, box-shadow 0.2s;
@@ -89,25 +106,43 @@ button:hover {
   box-shadow: 0 6px 20px rgba(0,0,0,0.5);
 }
 
-/* ===== PRICE COLORS ===== */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.card-header h3 {
+  margin: 0;
+}
+
+.coin-icon {
+  font-size: 1.8rem;
+}
+
+/* Pie chart weergave */
+.chart-card {
+  margin-top: 20px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Prijs fonts */
+.price {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin: 4px 0;
+}
+
+/* Kleuren (negatief/positief) */
 .green {
   color: #00ffae;
 }
 
 .red {
   color: #ff4d4d;
-}
-
-/* ===== BACKGROUND GLOW ===== */
-body::before {
-  content: "";
-  position: fixed;
-  top: -200px;
-  left: -200px;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, #646cff55, transparent 70%);
-  z-index: -1;
 }
 
 body::after {
