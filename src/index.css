@@ -6,7 +6,7 @@
   color: white;
   background-color: #242424;
 }
-
+ 
 body {
   background-color: black;
   color: white;
@@ -14,21 +14,21 @@ body {
   padding: 20px;
   margin: 0;
 }
-
+ 
 a {
   font-weight: 500;
   color: #646cff;
   text-decoration: none;
 }
-
+ 
 a:hover {
   color: #535bf2;
 }
-
+ 
 h1 {
   font-size: 2.5em;
 }
-
+ 
 button {
   border-radius: 8px;
   padding: 0.6em 1.2em;
@@ -39,26 +39,26 @@ button {
   color: white;
   cursor: pointer;
 }
-
+ 
 button:hover {
   opacity: 0.9;
 }
-
+ 
 /* container */
 .container {
   max-width: 1000px;
   margin: 40px auto;
   padding: 30px;
   border-radius: 16px;
-
+ 
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-
+ 
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
 }
-
+ 
 /* header */
 .header {
   display: flex;
@@ -66,61 +66,83 @@ button:hover {
   align-items: center;
   margin-bottom: 25px;
 }
-
+ 
 .header-right {
   display: flex;
   align-items: center;
   gap: 12px;
 }
-
+ 
 .last-updated {
   font-size: 0.85rem;
   color: #888;
 }
-
+ 
 .logo {
   font-weight: bold;
   font-size: 1.5rem;
   color: #646cff;
 }
-
+ 
 /* Volledige lijst van crypto coins  */
 .coin-list {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
-
+ 
 /* Blokken crypto coins */
 .card {
   background: rgba(255, 255, 255, 0.03);
   border-radius: 12px;
   padding: 20px;
-
+ 
   border: 1px solid rgba(255, 255, 255, 0.08);
   transition: transform 0.2s, box-shadow 0.2s;
 }
-
+ 
 .card:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 20px rgba(0,0,0,0.5);
 }
-
+ 
 .card-header {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 8px;
 }
-
+ 
 .card-header h3 {
   margin: 0;
+  flex: 1;
 }
-
+ 
 .coin-icon {
   font-size: 1.8rem;
 }
-
+ 
+/* Favoriet knop in de card */
+.fav-btn {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 0;
+  margin-left: auto;
+}
+ 
+/* Favorieten balk bovenaan */
+.favorites-bar {
+  background: rgba(255, 200, 0, 0.1);
+  border: 1px solid rgba(255, 200, 0, 0.3);
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  color: #ffd700;
+}
+ 
 /* Pie chart weergave */
 .chart-card {
   margin-top: 20px;
@@ -128,23 +150,188 @@ button:hover {
   margin-left: auto;
   margin-right: auto;
 }
-
+ 
 /* Prijs fonts */
 .price {
   font-size: 1.4rem;
   font-weight: bold;
   margin: 4px 0;
 }
-
+ 
 /* Kleuren (negatief/positief) */
 .green {
   color: #00ffae;
 }
-
+ 
 .red {
   color: #ff4d4d;
 }
-
+ 
+/* Zoekbalk */
+.search-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  font-size: 1rem;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+}
+ 
+.search-input::placeholder {
+  color: #888;
+}
+ 
+/* Tabel voor alle coins */
+.coins-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+ 
+.coins-table th {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #aaa;
+}
+ 
+.coins-table td {
+  padding: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+ 
+.coins-table tr:hover td {
+  background: rgba(255, 255, 255, 0.04);
+}
+ 
+/* Detail pagina */
+.detail-card {
+  margin-top: 20px;
+}
+ 
+.detail-card > button {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+ 
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+ 
+.detail-title-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+ 
+.detail-img {
+  border-radius: 50%;
+}
+ 
+.detail-name {
+  margin: 0;
+  font-size: 1.5rem;
+}
+ 
+.detail-symbol {
+  font-size: 0.85rem;
+  color: #888;
+}
+ 
+.detail-price-block {
+  text-align: right;
+}
+ 
+.detail-price {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0;
+}
+ 
+.detail-change {
+  margin: 4px 0 0;
+  font-size: 1rem;
+}
+ 
+/* Stat blokjes */
+.detail-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+ 
+.detail-stat {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+ 
+.detail-stat-label {
+  font-size: 0.75rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+ 
+.detail-stat-value {
+  font-size: 0.95rem;
+  font-weight: bold;
+}
+ 
+.detail-all-label {
+  font-size: 0.8rem;
+  color: #888;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+}
+ 
+.detail-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+ 
+.detail-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  word-break: break-all;
+}
+ 
+.detail-key {
+  color: #aaa;
+  width: 220px;
+  font-weight: bold;
+}
+ 
+@media (max-width: 600px) {
+  .detail-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .detail-header {
+    flex-direction: column;
+  }
+  .detail-price-block {
+    text-align: left;
+  }
+}
+ 
 body::after {
   content: "";
   position: fixed;
@@ -155,23 +342,28 @@ body::after {
   background: radial-gradient(circle, #00ffae33, transparent 70%);
   z-index: -1;
 }
-
+ 
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
     background-color: #ffffff;
   }
-
+ 
   body {
     background: #f5f5f5;
     color: #111;
   }
-
+ 
   .container {
     background: rgba(255, 255, 255, 0.7);
   }
-
+ 
   .card {
     background: rgba(0, 0, 0, 0.03);
+  }
+ 
+  .search-input {
+    color: #111;
+    background: rgba(0, 0, 0, 0.05);
   }
 }
