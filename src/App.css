@@ -40,3 +40,22 @@
 .read-the-docs {
   color: #888;
 }
+
+.loper {
+  position: fixed;
+  bottom: 0;
+  left: -150px;
+  width: 100px;
+  z-index: 9999;
+  animation: lopen 8s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes lopen {
+  0% {
+    left: -150px;
+  }
+  100% {
+    left: 110%;
+  }
+}
