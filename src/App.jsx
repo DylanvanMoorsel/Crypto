@@ -1,15 +1,25 @@
+// react hooks importeren
 import { useState, useEffect, useRef } from "react";
+ 
+// chart.js voor de grafieken
 import Chart from "chart.js/auto";
+ 
+// css importeren
 import "./App.css";
  
+// api url voor de 3 coin prijzen
 const API_URL = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=eur&include_24hr_change=true&x_cg_demo_api_key=CG-GELfdWVmVWAYUrdgU4pXoGfk";
+ 
+// api url voor alle 100 coins
 const ALL_COINS_URL = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=100&page=1&x_cg_demo_api_key=CG-GELfdWVmVWAYUrdgU4pXoGfk";
  
+// header bovenaan met de naam en vernieuw knop
 function Header({ onRefresh, lastUpdated }) {
   return (
     <div className="header">
       <div className="logo">CryptoDash</div>
       <div className="header-right">
+        {/* tijdstip alleen tonen als het er is */}
         {lastUpdated && <span className="last-updated">Bijgewerkt om {lastUpdated}</span>}
         <button onClick={onRefresh}>Vernieuwen</button>
       </div>
@@ -17,41 +27,56 @@ function Header({ onRefresh, lastUpdated }) {
   );
 }
  
+// prijs weergeven in euros
 function PriceDisplay({ price }) {
+  // als het nog geen getal is (bijv. "Laden...") gewoon de tekst tonen
   if (typeof price !== "number") {
     return <p className="price">{price}</p>;
   }
+  // anders netjes opmaken met 2 decimalen
   return <p className="price">€{price.toLocaleString("nl-NL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>;
 }
  
+// verandering tonen in groen of rood
 function ChangeDisplay({ change }) {
+  // als er geen waarde is niks tonen
   if (change === null || change === undefined) {
     return null;
   }
+  // positief = groen met + teken
   if (change >= 0) {
     return <p className="green">+{change.toFixed(2)}%</p>;
   }
+  // negatief = rood
   return <p className="red">{change.toFixed(2)}%</p>;
 }
  
+// lijn grafiek van de prijsgeschiedenis
 function LineChart({ color, history }) {
+  // verwijzing naar het canvas element waar de grafiek op komt
   const canvasRef = useRef(null);
+  // de grafiek zelf opslaan zodat we hem later kunnen verwijderen
   const chartRef = useRef(null);
  
+  // grafiek opnieuw tekenen als de history verandert
   useEffect(() => {
+    // minimaal 2 punten nodig voor een lijn
     if (history.length < 2) {
       return;
     }
  
+    // oude grafiek verwijderen anders stapelen ze op
     if (chartRef.current) {
       chartRef.current.destroy();
     }
  
+    // labels voor de x-as (1, 2, 3, ...)
     const labels = [];
     for (let i = 0; i < history.length; i++) {
       labels.push(i + 1);
     }
  
+    // nieuwe grafiek aanmaken
     chartRef.current = new Chart(canvasRef.current, {
       type: "line",
       data: {
@@ -76,6 +101,7 @@ function LineChart({ color, history }) {
       },
     });
  
+    // grafiek opruimen als het component verdwijnt
     return () => {
       if (chartRef.current) {
         chartRef.current.destroy();
@@ -86,9 +112,11 @@ function LineChart({ color, history }) {
   return <canvas ref={canvasRef} height={80} />;
 }
  
+// kaart voor bitcoin
 function BitcoinCard({ data, history, onFavorite, isFavorite }) {
   let price = "Laden...";
   let change = null;
+  // data invullen als de api klaar is
   if (data) {
     price = data.eur;
     change = data.eur_24h_change;
@@ -98,6 +126,7 @@ function BitcoinCard({ data, history, onFavorite, isFavorite }) {
       <div className="card-header">
         <span className="coin-icon">₿</span>
         <h3>Bitcoin (BTC)</h3>
+        {/* ster knop voor favorieten */}
         <button className="fav-btn" onClick={() => onFavorite("bitcoin")}>
           {isFavorite ? "⭐" : "☆"}
         </button>
@@ -109,6 +138,7 @@ function BitcoinCard({ data, history, onFavorite, isFavorite }) {
   );
 }
  
+// kaart voor ethereum
 function EthereumCard({ data, history, onFavorite, isFavorite }) {
   let price = "Laden...";
   let change = null;
@@ -132,6 +162,7 @@ function EthereumCard({ data, history, onFavorite, isFavorite }) {
   );
 }
  
+// kaart voor solana
 function SolanaCard({ data, history, onFavorite, isFavorite }) {
   let price = "Laden...";
   let change = null;
@@ -155,15 +186,18 @@ function SolanaCard({ data, history, onFavorite, isFavorite }) {
   );
 }
  
+// taart diagram van de top 10 coins op marktwaarde
 function PieChart({ allCoins }) {
   const canvasRef = useRef(null);
   const chartRef = useRef(null);
  
   useEffect(() => {
+    // stoppen als er nog geen data is
     if (allCoins.length === 0) {
       return;
     }
  
+    // oude grafiek verwijderen
     if (chartRef.current) {
       chartRef.current.destroy();
     }
@@ -172,11 +206,13 @@ function PieChart({ allCoins }) {
     const waarden = [];
     const kleuren = ["#f7931a", "#627eea", "#9945ff", "#00d4aa", "#e84142", "#2775ca", "#f0b90b", "#e6007a", "#16c784", "#ff6b35"];
  
+    // eerste 10 coins pakken
     for (let i = 0; i < 10; i++) {
       namen.push(allCoins[i].name);
       waarden.push(allCoins[i].market_cap);
     }
  
+    // grafiek aanmaken
     chartRef.current = new Chart(canvasRef.current, {
       type: "pie",
       data: {
@@ -187,6 +223,7 @@ function PieChart({ allCoins }) {
         plugins: {
           title: { display: true, text: "Marktaandeel top 10 coins", color: "#ffffff", font: { size: 16 } },
           legend: { labels: { color: "#ffffff" } },
+          // tooltip netjes opmaken
           tooltip: {
             callbacks: {
               label: (item) => {
@@ -213,11 +250,13 @@ function PieChart({ allCoins }) {
   );
 }
  
+// detailpagina van een coin
 function CoinDetail({ coin, onBack }) {
   if (!coin) {
     return null;
   }
  
+  // geeft "green" of "red" terug op basis van positief of negatief
   function getColor(val) {
     if (val === null || val === undefined) {
       return "";
@@ -228,6 +267,7 @@ function CoinDetail({ coin, onBack }) {
     return "red";
   }
  
+  // maakt van een getal een percentage met + of - teken
   function getPct(val) {
     if (val === null || val === undefined) {
       return "-";
@@ -240,7 +280,10 @@ function CoinDetail({ coin, onBack }) {
  
   return (
     <div className="card detail-card">
+      {/* terug knop */}
       <button onClick={onBack}>← Terug</button>
+ 
+      {/* naam en prijs bovenaan */}
       <div className="detail-header">
         <div className="detail-title-row">
           {coin.image && <img src={coin.image} alt={coin.name} width={52} height={52} className="detail-img" />}
@@ -257,6 +300,7 @@ function CoinDetail({ coin, onBack }) {
         </div>
       </div>
  
+      {/* 4 stat blokjes */}
       <div className="detail-stats">
         <div className="detail-stat">
           <span className="detail-stat-label">Marktcap</span>
@@ -280,6 +324,7 @@ function CoinDetail({ coin, onBack }) {
         </div>
       </div>
  
+      {/* alle gegevens van de coin in een tabel, id wordt niet getoond */}
       <p className="detail-all-label">Alle gegevens</p>
       <table className="detail-table">
         <tbody>
@@ -302,9 +347,12 @@ function CoinDetail({ coin, onBack }) {
   );
 }
  
+// lijst van alle 100 coins met zoekbalk
 function AllCoinsList({ coins, onSelect, favorites, onFavorite }) {
+  // zoekterm opslaan
   const [search, setSearch] = useState("");
  
+  // coins filteren op zoekterm
   const filtered = [];
   for (let i = 0; i < coins.length; i++) {
     const coin = coins[i];
@@ -318,6 +366,8 @@ function AllCoinsList({ coins, onSelect, favorites, onFavorite }) {
   return (
     <div className="card" style={{ marginTop: "20px" }}>
       <h2>Alle coins (top 100)</h2>
+ 
+      {/* zoekveld */}
       <input
         className="search-input"
         type="text"
@@ -325,6 +375,7 @@ function AllCoinsList({ coins, onSelect, favorites, onFavorite }) {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
+ 
       <table className="coins-table">
         <thead>
           <tr>
@@ -337,16 +388,19 @@ function AllCoinsList({ coins, onSelect, favorites, onFavorite }) {
         </thead>
         <tbody>
           {filtered.map((coin) => {
+            // kleur bepalen voor de verandering
             let kleur = "red";
             if (coin.price_change_percentage_24h >= 0) {
               kleur = "green";
             }
  
+            // ster bepalen voor favorieten
             let ster = "☆";
             if (favorites.includes(coin.id)) {
               ster = "⭐";
             }
  
+            // verandering opmaken, sommige coins hebben geen waarde
             let verandering = "-";
             if (coin.price_change_percentage_24h !== null && coin.price_change_percentage_24h !== undefined) {
               verandering = coin.price_change_percentage_24h.toFixed(2) + "%";
@@ -356,6 +410,7 @@ function AllCoinsList({ coins, onSelect, favorites, onFavorite }) {
             }
  
             return (
+              // klikken op een rij opent de detailpagina
               <tr key={coin.id} onClick={() => onSelect(coin)} style={{ cursor: "pointer" }}>
                 <td>{coin.market_cap_rank}</td>
                 <td>
@@ -364,6 +419,7 @@ function AllCoinsList({ coins, onSelect, favorites, onFavorite }) {
                 </td>
                 <td>€{coin.current_price.toLocaleString("nl-NL")}</td>
                 <td className={kleur}>{verandering}</td>
+                {/* stopPropagation zodat de rij klik niet afgaat bij de ster */}
                 <td onClick={(e) => { e.stopPropagation(); onFavorite(coin.id); }}>{ster}</td>
               </tr>
             );
@@ -374,29 +430,39 @@ function AllCoinsList({ coins, onSelect, favorites, onFavorite }) {
   );
 }
  
+// hoofd component waar alles samenkomt
 function App() {
+  // prijzen van de 3 coins
   const [bitcoinPrijs, setBitcoinPrijs] = useState(null);
   const [ethereumPrijs, setEthereumPrijs] = useState(null);
   const [solanaPrijs, setSolanaPrijs] = useState(null);
  
+  // prijsgeschiedenis voor de lijn grafieken
   const [bitcoinHistory, setBitcoinHistory] = useState([]);
   const [ethereumHistory, setEthereumHistory] = useState([]);
   const [solanaHistory, setSolanaHistory] = useState([]);
  
+  // tijdstip van laatste update
   const [lastUpdated, setLastUpdated] = useState(null);
+  // alle 100 coins
   const [allCoins, setAllCoins] = useState([]);
+  // welke coin is aangeklikt
   const [selectedCoin, setSelectedCoin] = useState(null);
+  // favorieten lijst
   const [favorites, setFavorites] = useState([]);
  
+  // prijzen ophalen van de api
   async function fetchPrices() {
     try {
       const response = await fetch(API_URL);
       const data = await response.json();
  
+      // prijzen opslaan
       setBitcoinPrijs(data.bitcoin);
       setEthereumPrijs(data.ethereum);
       setSolanaPrijs(data.solana);
  
+      // nieuwe prijs toevoegen aan geschiedenis, max 20 bewaren
       setBitcoinHistory((prev) => {
         const nieuw = [...prev, data.bitcoin.eur];
         if (nieuw.length > 20) nieuw.shift();
@@ -415,6 +481,7 @@ function App() {
         return nieuw;
       });
  
+      // tijdstip opslaan
       const tijd = new Date().toLocaleTimeString("nl-NL");
       setLastUpdated(tijd);
  
@@ -423,6 +490,7 @@ function App() {
     }
   }
  
+  // alle 100 coins ophalen
   async function fetchAllCoins() {
     try {
       const response = await fetch(ALL_COINS_URL);
@@ -433,15 +501,19 @@ function App() {
     }
   }
  
+  // favoriet toevoegen of verwijderen
   function toggleFavorite(coinId) {
     if (favorites.includes(coinId)) {
+      // verwijderen uit favorieten
       const nieuweLijst = favorites.filter((f) => f !== coinId);
       setFavorites(nieuweLijst);
     } else {
+      // toevoegen aan favorieten
       setFavorites([...favorites, coinId]);
     }
   }
  
+  // 1 keer uitvoeren bij het laden, daarna elke 30 seconden verversen
   useEffect(() => {
     fetchPrices();
     fetchAllCoins();
@@ -449,6 +521,7 @@ function App() {
     return () => clearInterval(interval);
   }, []);
  
+  // detailpagina tonen als een coin is aangeklikt
   if (selectedCoin) {
     return (
       <div className="container">
@@ -458,10 +531,12 @@ function App() {
     );
   }
  
+  // normale hoofdpagina
   return (
     <div className="container">
       <Header onRefresh={fetchPrices} lastUpdated={lastUpdated} />
  
+      {/* favorieten balk, alleen tonen als er favorieten zijn */}
       {favorites.length > 0 && (
         <div className="favorites-bar">
           ⭐ Favorieten: {favorites.join(", ")}
@@ -470,6 +545,7 @@ function App() {
  
       <h1>Market Overview</h1>
  
+      {/* de 3 coin kaarten */}
       <div className="coin-list">
         <BitcoinCard
           data={bitcoinPrijs}
@@ -491,8 +567,10 @@ function App() {
         />
       </div>
  
+      {/* taart diagram */}
       <PieChart allCoins={allCoins} />
  
+      {/* lijst van alle coins */}
       <AllCoinsList
         coins={allCoins}
         onSelect={setSelectedCoin}
@@ -504,4 +582,3 @@ function App() {
 }
  
 export default App;
- 
