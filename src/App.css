@@ -47,8 +47,8 @@
   left: -150px;
   width: 100px;
   z-index: 9999;
-  animation: lopen 8s linear infinite;
   pointer-events: none;
+  animation: lopen 8s linear infinite, draaien 1s linear infinite;
 }
 
 @keyframes lopen {
@@ -57,5 +57,14 @@
   }
   100% {
     left: 110%;
+  }
+}
+
+@keyframes draaien {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }

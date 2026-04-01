@@ -21,7 +21,7 @@ function PriceDisplay({ price }) {
   if (typeof price !== "number") {
     return <p className="price">{price}</p>;
   }
-  return <p className="price">€{price.toLocaleString("nl-NL")}</p>;
+  return <p className="price">€{price.toLocaleString("nl-NL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>;
 }
  
 function ChangeDisplay({ change }) {
@@ -187,6 +187,14 @@ function PieChart({ allCoins }) {
         plugins: {
           title: { display: true, text: "Marktaandeel top 10 coins", color: "#ffffff", font: { size: 16 } },
           legend: { labels: { color: "#ffffff" } },
+          tooltip: {
+            callbacks: {
+              label: (item) => {
+                const waarde = item.raw;
+                return " €" + waarde.toLocaleString("nl-NL", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+              }
+            }
+          }
         },
       },
     });
