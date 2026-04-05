@@ -6,7 +6,6 @@ import Chart from "chart.js/auto";
  
 // css importeren
 import "./App.css";
- 
 // api url voor de 3 coin prijzen
 const API_URL = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=eur&include_24hr_change=true&x_cg_demo_api_key=CG-GELfdWVmVWAYUrdgU4pXoGfk";
  

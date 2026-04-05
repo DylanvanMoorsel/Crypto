@@ -16,6 +16,7 @@ import './Coin.css';
 function Coin({ coin }) {
   if (!coin) {
     return null;
+    
   }
 
   return (
