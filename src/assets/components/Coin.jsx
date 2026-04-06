@@ -1,38 +1,33 @@
 import React from 'react';
-import './Coin.css';
 
 /**
- * Presentational component for a single cryptocurrency coin.
+ * Weergavecomponent voor een enkele cryptocurrency.
  *
- * Props
- * - coin: object containing details returned from the API (name, symbol,
- *   current_price, image, etc.).
+ * Props:
+ * - coin: object met gegevens van de API (name, symbol, current_price, image, etc.)
  *
- * Example usage:
+ * Gebruik:
  * ```jsx
- * <Coin coin={someCoinData} />
+ * <Coin coin={coinData} />
  * ```
  */
 function Coin({ coin }) {
-  if (!coin) {
-    return null;
-    
-  }
+  if (!coin) return null;
 
   return (
-    <div className="coin">
+    <div className="flex items-center justify-between px-4 py-2 border-b border-[#e0e0e0]">
       <img
-        className="coin__logo"
+        className="mr-3"
         src={coin.image}
         alt={`${coin.name} logo`}
         width={32}
         height={32}
       />
-      <div className="coin__info">
-        <h2 className="coin__name">{coin.name}</h2>
-        <p className="coin__symbol">{coin.symbol.toUpperCase()}</p>
+      <div className="flex-1 flex flex-col">
+        <h2 className="m-0 text-base font-semibold">{coin.name}</h2>
+        <p className="m-0 text-sm text-gray-500">{coin.symbol.toUpperCase()}</p>
       </div>
-      <div className="coin__price">
+      <div className="text-base font-medium">
         ${coin.current_price.toLocaleString()}
       </div>
     </div>
