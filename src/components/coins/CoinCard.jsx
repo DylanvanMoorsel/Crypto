@@ -1,4 +1,4 @@
-import LineChart from "./LineChart";
+import LineChart from "../charts/LineChart";
 
 function PriceDisplay({ price }) {
   if (typeof price !== "number") {

@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 
-import Header from "./components/Header";
-import CoinCard from "./components/CoinCard";
-import PieChart from "./components/PieChart";
-import CoinDetail from "./components/CoinDetail";
-import AllCoinsList from "./components/AllCoinsList";
+import Header from "./components/layout/Header";
+import CoinCard from "./components/coins/CoinCard";
+import CoinDetail from "./components/coins/CoinDetail";
+import AllCoinsList from "./components/coins/AllCoinsList";
+import PieChart from "./components/charts/PieChart";
 
 // api url voor de 3 coin prijzen
 const API_URL = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=eur&include_24hr_change=true&x_cg_demo_api_key=CG-GELfdWVmVWAYUrdgU4pXoGfk";
