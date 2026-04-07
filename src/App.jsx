@@ -7,45 +7,50 @@ import CoinDetail from "./components/coins/CoinDetail";
 import AllCoinsList from "./components/coins/AllCoinsList";
 import PieChart from "./components/charts/PieChart";
 
-// api url voor de 3 coin prijzen
+// URL voor de 3 coin prijzen (bitcoin, ethereum, solana) van de CoinGecko API
 const API_URL = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=eur&include_24hr_change=true&x_cg_demo_api_key=CG-GELfdWVmVWAYUrdgU4pXoGfk";
 
-// api url voor alle 100 coins
+// URL voor de top 100 coins gesorteerd op marktwaarde
 const ALL_COINS_URL = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=100&page=1&x_cg_demo_api_key=CG-GELfdWVmVWAYUrdgU4pXoGfk";
 
-// hoofd component waar alles samenkomt
 function App() {
-  // prijzen van de 3 coins
+  // useState = iets onthouden dat kan veranderen, React hertekent de pagina automatisch
+  // syntax: const [waarde, setWaarde] = useState(beginwaarde)
+
+  // huidige prijzen van de 3 coins
   const [bitcoinPrijs, setBitcoinPrijs] = useState(null);
   const [ethereumPrijs, setEthereumPrijs] = useState(null);
   const [solanaPrijs, setSolanaPrijs] = useState(null);
 
-  // prijsgeschiedenis voor de lijn grafieken
+  // prijsgeschiedenis per coin (max 20), wordt gebruikt voor de lijngrafieken
   const [bitcoinHistory, setBitcoinHistory] = useState([]);
   const [ethereumHistory, setEthereumHistory] = useState([]);
   const [solanaHistory, setSolanaHistory] = useState([]);
 
-  // tijdstip van laatste update
+  // tijdstip van de laatste update
   const [lastUpdated, setLastUpdated] = useState(null);
-  // alle 100 coins
+
+  // alle 100 coins voor de tabel en het taartdiagram
   const [allCoins, setAllCoins] = useState([]);
-  // welke coin is aangeklikt
+
+  // welke coin is aangeklikt? null = hoofdpagina tonen
   const [selectedCoin, setSelectedCoin] = useState(null);
-  // favorieten lijst
+
+  // lijst van favoriete coin-id's (bijv. ["bitcoin", "solana"])
   const [favorites, setFavorites] = useState([]);
 
-  // prijzen ophalen van de api
+  // haalt de 3 coin prijzen op van de API
   async function fetchPrices() {
     try {
       const response = await fetch(API_URL);
       const data = await response.json();
 
-      // prijzen opslaan
+      // prijzen opslaan in state
       setBitcoinPrijs(data.bitcoin);
       setEthereumPrijs(data.ethereum);
       setSolanaPrijs(data.solana);
 
-      // nieuwe prijs toevoegen aan geschiedenis, max 20 bewaren
+      // nieuwe prijs toevoegen aan de geschiedenis, oudste verwijderen als er meer dan 20 zijn
       setBitcoinHistory((prev) => {
         const nieuw = [...prev, data.bitcoin.eur];
         if (nieuw.length > 20) nieuw.shift();
@@ -64,7 +69,6 @@ function App() {
         return nieuw;
       });
 
-      // tijdstip opslaan
       const tijd = new Date().toLocaleTimeString("nl-NL");
       setLastUpdated(tijd);
 
@@ -73,7 +77,7 @@ function App() {
     }
   }
 
-  // alle 100 coins ophalen
+  // haalt de top 100 coins op, wordt maar 1 keer uitgevoerd bij het laden
   async function fetchAllCoins() {
     try {
       const response = await fetch(ALL_COINS_URL);
@@ -84,27 +88,30 @@ function App() {
     }
   }
 
-  // favoriet toevoegen of verwijderen
+  // voegt een coin toe aan favorieten of verwijdert hem
   function toggleFavorite(coinId) {
     if (favorites.includes(coinId)) {
-      // verwijderen uit favorieten
       const nieuweLijst = favorites.filter((f) => f !== coinId);
       setFavorites(nieuweLijst);
     } else {
-      // toevoegen aan favorieten
       setFavorites([...favorites, coinId]);
     }
   }
 
-  // 1 keer uitvoeren bij het laden, daarna elke 30 seconden verversen
+  // useEffect = iets uitvoeren buiten React om, zoals een API-aanroep of timer
+  // de [] zorgt ervoor dat dit maar 1 keer draait bij het laden, niet bij elke render
   useEffect(() => {
     fetchPrices();
     fetchAllCoins();
+
+    // elke 30 seconden de prijzen verversen
     const interval = setInterval(fetchPrices, 30000);
+
+    // timer stoppen als de app sluit (cleanup)
     return () => clearInterval(interval);
   }, []);
 
-  // detailpagina tonen als een coin is aangeklikt
+  // als er een coin is aangeklikt, toon de detailpagina in plaats van de hoofdpagina
   if (selectedCoin) {
     return (
       <div className="max-w-4xl mx-auto my-10 p-8 rounded-2xl bg-gray-900 border border-gray-700 shadow-2xl">
@@ -114,7 +121,7 @@ function App() {
     );
   }
 
-  // normale hoofdpagina
+  // hoofdpagina
   return (
     <div className="max-w-4xl mx-auto my-10 p-8 rounded-2xl bg-gray-900 border border-gray-700 shadow-2xl">
       <Header onRefresh={fetchPrices} lastUpdated={lastUpdated} />
@@ -128,7 +135,7 @@ function App() {
 
       <h1>Market Overview</h1>
 
-      {/* de 3 coin kaarten */}
+      {/* de 3 coin kaarten, elke kaart krijgt zijn eigen data en geschiedenis mee */}
       <div className="flex flex-col gap-4">
         <CoinCard
           id="bitcoin" label="Bitcoin (BTC)" icon="₿" color="#f7931a"

@@ -1,4 +1,5 @@
-// header bovenaan met de naam en vernieuw knop
+// toont de naam van de app, het tijdstip van de laatste update en een vernieuw-knop
+// onRefresh en lastUpdated komen als props binnen vanuit App.jsx
 function Header({ onRefresh, lastUpdated }) {
   return (
     <div className="flex justify-between items-center mb-6">

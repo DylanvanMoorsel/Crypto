@@ -1,34 +1,27 @@
-// detailpagina van een coin
+// detailpagina van een coin, wordt getoond als je op een rij in de tabel klikt
+// coin = het object met alle data, onBack = functie om terug te gaan
 function CoinDetail({ coin, onBack }) {
   if (!coin) {
     return null;
   }
 
-  // geeft groen of rood terug op basis van positief of negatief
+  // geeft groen of rood terug afhankelijk van positief of negatief getal
   function getColor(val) {
-    if (val === null || val === undefined) {
-      return "";
-    }
-    if (val >= 0) {
-      return "text-green-400";
-    }
+    if (val === null || val === undefined) return "";
+    if (val >= 0) return "text-green-400";
     return "text-red-400";
   }
 
-  // maakt van een getal een percentage met + of - teken
+  // maakt van een getal een percentage met + of - teken (bijv. "+3.45%")
   function getPct(val) {
-    if (val === null || val === undefined) {
-      return "-";
-    }
-    if (val >= 0) {
-      return "+" + val.toFixed(2) + "%";
-    }
+    if (val === null || val === undefined) return "-";
+    if (val >= 0) return "+" + val.toFixed(2) + "%";
     return val.toFixed(2) + "%";
   }
 
   return (
     <div className="bg-gray-800 rounded-xl p-5 border border-gray-700 mt-5">
-      {/* terug knop */}
+      {/* terug knop roept onBack aan, wat selectedCoin op null zet in App.jsx */}
       <button className="rounded-lg px-5 py-2 bg-indigo-500 border-0 text-white cursor-pointer hover:bg-indigo-600 flex items-center gap-1 mb-5" onClick={onBack}>← Terug</button>
 
       {/* naam en prijs bovenaan */}
@@ -48,7 +41,7 @@ function CoinDetail({ coin, onBack }) {
         </div>
       </div>
 
-      {/* 4 stat blokjes */}
+      {/* 4 stat blokjes: marktcap, volume, 7 dagen, 30 dagen */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
         <div className="bg-gray-700 rounded-xl p-3 flex flex-col gap-1 border border-gray-600">
           <span className="text-xs text-gray-400 uppercase">Marktcap</span>
