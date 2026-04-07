@@ -1,16 +1,5 @@
 import React from 'react';
 
-/**
- * Weergavecomponent voor een enkele cryptocurrency.
- *
- * Props:
- * - coin: object met gegevens van de API (name, symbol, current_price, image, etc.)
- *
- * Gebruik:
- * ```jsx
- * <Coin coin={coinData} />
- * ```
- */
 function Coin({ coin }) {
   if (!coin) return null;
 

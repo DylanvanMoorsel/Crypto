@@ -324,25 +324,6 @@ function CoinDetail({ coin, onBack }) {
         </div>
       </div>
 
-      {/* alle gegevens van de coin in een tabel */}
-      <p className="text-xs text-gray-400 font-bold uppercase mb-2">Alle gegevens</p>
-      <table className="w-full border-collapse text-xs">
-        <tbody>
-          <tr><td className="text-gray-400 w-48 font-bold p-1.5 border-b border-gray-700">naam</td><td className="p-1.5 border-b border-gray-700">{coin.name}</td></tr>
-          <tr><td className="text-gray-400 w-48 font-bold p-1.5 border-b border-gray-700">symbool</td><td className="p-1.5 border-b border-gray-700">{coin.symbol}</td></tr>
-          <tr><td className="text-gray-400 w-48 font-bold p-1.5 border-b border-gray-700">prijs</td><td className="p-1.5 border-b border-gray-700">€{coin.current_price.toLocaleString("nl-NL")}</td></tr>
-          <tr><td className="text-gray-400 w-48 font-bold p-1.5 border-b border-gray-700">marktcap</td><td className="p-1.5 border-b border-gray-700">€{coin.market_cap.toLocaleString("nl-NL")}</td></tr>
-          <tr><td className="text-gray-400 w-48 font-bold p-1.5 border-b border-gray-700">volume 24u</td><td className="p-1.5 border-b border-gray-700">€{coin.total_volume.toLocaleString("nl-NL")}</td></tr>
-          <tr><td className="text-gray-400 w-48 font-bold p-1.5 border-b border-gray-700">hoogste prijs ooit</td><td className="p-1.5 border-b border-gray-700">€{coin.ath.toLocaleString("nl-NL")}</td></tr>
-          <tr><td className="text-gray-400 w-48 font-bold p-1.5 border-b border-gray-700">laagste prijs ooit</td><td className="p-1.5 border-b border-gray-700">€{coin.atl.toLocaleString("nl-NL")}</td></tr>
-          <tr><td className="text-gray-400 w-48 font-bold p-1.5 border-b border-gray-700">verandering 24u</td><td className={`p-1.5 border-b border-gray-700 ${getColor(coin.price_change_percentage_24h)}`}>{getPct(coin.price_change_percentage_24h)}</td></tr>
-          <tr><td className="text-gray-400 w-48 font-bold p-1.5 border-b border-gray-700">verandering 7d</td><td className={`p-1.5 border-b border-gray-700 ${getColor(coin.price_change_percentage_7d)}`}>{getPct(coin.price_change_percentage_7d)}</td></tr>
-          <tr><td className="text-gray-400 w-48 font-bold p-1.5 border-b border-gray-700">verandering 30d</td><td className={`p-1.5 border-b border-gray-700 ${getColor(coin.price_change_percentage_30d)}`}>{getPct(coin.price_change_percentage_30d)}</td></tr>
-          <tr><td className="text-gray-400 w-48 font-bold p-1.5 border-b border-gray-700">circulerend aanbod</td><td className="p-1.5 border-b border-gray-700">{coin.circulating_supply}</td></tr>
-          <tr><td className="text-gray-400 w-48 font-bold p-1.5 border-b border-gray-700">totaal aanbod</td><td className="p-1.5 border-b border-gray-700">{coin.total_supply}</td></tr>
-          <tr><td className="text-gray-400 w-48 font-bold p-1.5 border-b border-gray-700">rang</td><td className="p-1.5 border-b border-gray-700">#{coin.market_cap_rank}</td></tr>
-        </tbody>
-      </table>
     </div>
   );
 }
